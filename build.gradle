@@ -1,0 +1,68 @@
+//def projectVersion = "1.0"
+project.ext.projectVersion = "2.0" 
+
+project.task("Task 1")
+
+task ("Task 2")
+
+task Task3
+Task3 << { println "Task 3" }
+
+task Task4
+Task4.description "Task 4 description"
+Task4.doLast { println "Hello Task 4" }
+
+task Task5 << { println "This is Task 5" }
+Task5 <<  { println "Another closure" }
+
+task Task6 {
+    description "Task 6 description"
+    doFirst {
+        println "Task 6 - First"
+    } 
+    doLast {
+        println "Hello world Task 6 of project version $projectVersion"
+    }
+}
+
+Task6.dependsOn Task5
+Task6.dependsOn Task3
+Task5.dependsOn Task4
+
+task taskA << { println "Task A" }
+task taskB << { println "Task B" }
+task taskC << { println "Task C" }
+task taskD << { println "Task D" }
+task taskE << { println "Task E" }
+task taskF << { println "Task F" }
+
+task taskG {
+    dependsOn taskE
+    doLast {
+        println "Task G"
+    }
+}
+
+taskA.dependsOn taskB
+taskA.dependsOn taskC, taskD
+
+taskC.dependsOn taskE
+taskD.dependsOn taskE
+
+taskA.dependsOn taskE
+taskA.dependsOn taskG
+
+taskB.mustRunAfter taskC
+taskB.shouldRunAfter taskD
+
+taskE.finalizedBy
+
+task task1 << { println "task 1" }
+task task2 << { println "task 2" }
+
+task2.mustRunAfter task1
+
+task copyImage(type: Copy) {
+    from 'src'
+    into 'dest'
+}
